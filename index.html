@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test AM</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+		<script src="./jquery-3.2.1.min.js"></script>
+		<script src="./jquery.csv.js"></script>
+	</head>
+	<body>
+	
+	<p id="test"></p>
+
+	</body>
+</html>
+
+<script type="text/javascript">
+		$(document).ready(function() {
+			
+			// array of arrays
+			$.ajax({
+				type: "GET",
+				url: "tferriss_billboard.csv",
+				dataType: "text",
+				success: function(data) { 
+					var result = $.csv.toArrays(data);
+					var len = result.length;
+					var rand = Math.floor((Math.random() * len));
+					var billboard = result[rand][1] + "<br/>  &mdash;" + result[rand][0];
+					document.getElementById('test').innerHTML = billboard;
+				;}
+			});
+			
+		});
+</script>
