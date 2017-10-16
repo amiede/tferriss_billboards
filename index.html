@@ -1,35 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Test AM</title>
+		<title>Tim Ferriss Billboard Answers</title>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, maximum-scale=1.0">
-		<script src="./jquery-3.2.1.min.js"></script>
-		<script src="./jquery.csv.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="css/bootstrap.min.css" >
+		<!--<link href="css/narrow-jumbotron.css" rel="stylesheet">-->
 	</head>
 	<body>
-	
-	<p id="test"></p>
+		<div class="container">
+			<br/>
+			
+			<p><a class="btn btn-lg btn-success" href="#" role="button" onclick="randomBillboard()">Random answer</a></p>		
+		
+			<div class="jumbotron">
+				<h1 class="display-3" id="billboard"></h1>
+				<p class="lead" id="author"></p>
+				<hr class="my-4">
+				<p class="lead"><a id="link">Link to podcast episode</a></p>
+			</div>
+		  
+			<div class="row">
+				<div class="col-lg-6">
+				  <h4>The Tim Ferriss Show</h4>
+				  <p><a href="https://tim.blog/podcast/">The Tim Ferriss Show</a> is one of the most successful and hugely inspiring podcasts in the world. As one (among many) interesting aspects, Tim generelly asks his guests what kind of message they would put on a billboard for millions of people to see. </p>
 
+				  <p>This website is an homage to The Tim Ferriss Show by showing you some of the very inspiring answers.</p>
+
+				  <h4>Resources</h4>
+				  <p>Find here a <a href="tex/tferriss_billboards.pdf">printable PDF</a> of the answers, the <a href="tex/tferriss_billboards.tex">LaTeX source</a> for customization, and the <a href="tferriss_billboards.csv">CSV</a>.</p>
+				</div>
+			</div>
+			<footer class="footer">
+				<p>Website created with <a href="https://jquery.com/">jQuery</a>, <a href="https://github.com/evanplaice/jquery-csv">jQuery-CSV</a>, and <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="http://www.miede.de">André Miede</a> 2017.</p>
+			</footer>
+		</div> <!-- /container -->
+
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/jquery.csv.js"></script>
+		<script src="js/bootstrap.min.js"></script>
 	</body>
 </html>
 
 <script type="text/javascript">
-		$(document).ready(function() {
-			
+		function randomBillboard() {
 			// array of arrays
 			$.ajax({
 				type: "GET",
-				url: "tferriss_billboard.csv",
+				url: "tferriss_billboards.csv",
 				dataType: "text",
 				success: function(data) { 
-					var result = $.csv.toArrays(data);
+					var options = { separator: ";", delimiter:'"', headers:false } 
+					var result = $.csv.toArrays(data, options );
 					var len = result.length;
 					var rand = Math.floor((Math.random() * len));
-					var billboard = result[rand][1] + "<br/>  &mdash;" + result[rand][0];
-					document.getElementById('test').innerHTML = billboard;
+					var billboard = result[rand][1] 
+					var author = "&mdash;" + result[rand][0];
+					var link = result[rand][2];
+					document.getElementById('billboard').innerHTML = billboard;
+					document.getElementById('author').innerHTML = author;
+					document.getElementById('link').href = link;
 				;}
 			});
-			
+		};
+		
+		$(document).ready(function() {
+			randomBillboard();
 		});
 </script>

@@ -1,0 +1,76 @@
+% =============================================
+% Tim Ferriss' billboard answers
+% LaTeX example by André Miede (2017)
+% =============================================
+\documentclass[paper=a4,12pt,landscape]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{printlen}
+\uselengthunit{cm}
+\usepackage[top=2cm, bottom=1.5cm, left=2cm, right=1cm]{geometry}
+% =============================================
+% COLOR =================================
+\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
+\usepackage{tcolorbox}
+% =============================================
+% FONTSSTUFF ==================================
+\usepackage{textcase} % for \MakeTextUppercase
+\usepackage{microtype}
+\microtypesetup{expansion=false} % protrusion=true,auto=true,tracking=true,tracking=smallcaps
+\DeclareRobustCommand{\spacedallcaps}[1]{\textls[160]{\MakeTextUppercase{#1}}}
+\DeclareRobustCommand{\spacedlowsmallcaps}[1]{\textls[80]{\scshape\MakeTextLowercase{#1}}}
+% =============================================
+% FONTS =======================================
+% \usepackage{lmodern}
+%\usepackage[default,osfigures]{opensans} % scale=0.95
+\usepackage[sfdefault]{FiraSans}
+%\usepackage[osf]{libertine}
+
+% =============================================
+% COLORBOXES ==================================
+\newlength{\framewidth}\setlength{\framewidth}{18cm}
+\newlength{\frameheight}\setlength{\frameheight}{13cm}
+\newtcolorbox{landscape}{width=\framewidth,height=\frameheight} % inverted: colback=black, coltext=white
+\tcbset{colframe=black, colback=white, coltext=black, arc=0mm,
+	halign=flush left, valign=center, % center top
+	boxsep=0cm, left=15mm, right=15mm, top=15mm, bottom=15mm, % inner margins of the frame
+	fontupper=\bfseries}
+	
+% DATA==================================
+\usepackage{datatool}
+
+% =============================================
+\begin{document}
+	\pagenumbering{arabic}
+	\pagestyle{plain}
+	\DTLsetseparator{;}
+	\DTLloaddb[noheader,keys={author,billboardtext,tfurl}]{tferrissbillboards}{../tferriss_billboards.csv} 
+	%\DTLdisplaydb{tferrissbillboards}
+	\DTLforeach{tferrissbillboards}{%
+		\author=author,
+		\billboardtext=billboardtext,
+		\tfurl=tfurl%
+	}{
+		\begin{landscape}
+			\fontsize{50}{55}\selectfont % font size
+			{\color{Maroon}\billboardtext} % red answer
+			%\billboardtext
+		  \begin{flushright}
+				\huge ---\,\spacedlowsmallcaps{\author}
+				%\color{Maroon}\huge ---\,\spacedlowsmallcaps{\author}
+				% \Huge ---\,\itshape \author
+			\end{flushright} 
+		\end{landscape}
+		
+		\vfill
+		
+		\begin{flushright}
+				\tfurl
+				
+				Frame size: \rndprintlength{\framewidth}$\times$\rndprintlength{\frameheight}
+		
+				Tim Ferriss' billboard answers https://tim.blog/ \\
+				LaTeX example by André Miede (2017)
+		\end{flushright}
+	}
+\end{document}
